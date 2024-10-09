@@ -1,9 +1,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { FaChevronLeft } from 'react-icons/fa'
-import BookingForm from '../../components/BookingForm'
-import Heading from '../../components/Heading'
-import { getSingleRoom } from '../../actions/room.actions'
+import BookingForm from '@/app/components/BookingForm'
+import Heading from '@/app/components/Heading'
+import { getSingleRoom } from '@/app/actions/room.actions'
 
 const RoomPage = async ({ params }) => {
   const { id } = params

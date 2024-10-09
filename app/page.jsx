@@ -1,6 +1,6 @@
-import RoomCard from './components/RoomCard'
-import Heading from './components/Heading'
-import { getAllRooms } from './actions/room.actions'
+import { getAllRooms } from '@/app/actions/room.actions'
+import Heading from '@/app/components/Heading'
+import RoomCard from '@/app/components/RoomCard'
 
 export default async function Home() {
   const rooms = await getAllRooms()

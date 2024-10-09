@@ -1,20 +1,23 @@
 'use client'
 
+import { createSession } from '@/app/actions/auth.actions'
+import { useAuth } from '@/context/authContext'
 import Link from 'next/link'
-import { createSession } from '../../actions/auth.actions'
-import { useFormState } from 'react-dom'
-import { useEffect } from 'react'
-import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
+import { useFormState } from 'react-dom'
+import { toast } from 'react-toastify'
 
 const LoginPage = () => {
   const [state, formAction] = useFormState(createSession, {})
+  const { setIsAuthenticated } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
     if (state.error) toast.error(state.error)
     if (state.success) {
       toast.success('Logged in successfully')
+      setIsAuthenticated(true)
       router.push('/')
     }
   }, [state])
