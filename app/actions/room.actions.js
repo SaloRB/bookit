@@ -1,10 +1,11 @@
 'use server'
 
 import { checkAuth } from '@/app/actions/auth.actions'
-import { createAdminClient } from '@/config/appwrite'
+import { createAdminClient, createSessionClient } from '@/config/appwrite'
 import { revalidatePath } from 'next/cache'
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { ID } from 'node-appwrite'
+import { ID, Query } from 'node-appwrite'
 
 const {
   NEXT_PUBLIC_APPWRITE_DATABASE_ID: DATABASE_ID,
@@ -28,6 +29,33 @@ export async function getAllRooms() {
     return rooms
   } catch (error) {
     console.log('Failed to get rooms', error)
+    redirect('/error')
+  }
+}
+
+export async function getMyRooms() {
+  const sessionCookie = cookies().get('appwrite-session')
+  if (!sessionCookie) redirect('/login')
+
+  try {
+    const { account, databases } = await createSessionClient(
+      sessionCookie.value
+    )
+
+    // Get user's ID
+    const user = await account.get()
+    const userId = user.$id
+
+    // Fetch rooms
+    const { documents: rooms } = await databases.listDocuments(
+      DATABASE_ID,
+      COLLECTION_ID,
+      [Query.equal('user_id', userId)]
+    )
+
+    return rooms
+  } catch (error) {
+    console.log('Failed to get user rooms', error)
     redirect('/error')
   }
 }
@@ -109,5 +137,49 @@ export async function createRoom(previousState, formData) {
     console.log('Failed to create room', error)
     const errorMessage = error.response.message || 'Failed to create room'
     return { error: errorMessage }
+  }
+}
+
+export async function deleteRoom(id) {
+  const sessionCookie = cookies().get('appwrite-session')
+  if (!sessionCookie) redirect('/login')
+
+  try {
+    const { account, databases } = await createSessionClient(
+      sessionCookie.value
+    )
+
+    // Get user's ID
+    const user = await account.get()
+    const userId = user.$id
+    // Fetch user's rooms
+    const { documents: rooms } = await databases.listDocuments(
+      DATABASE_ID,
+      COLLECTION_ID,
+      [Query.equal('user_id', userId)]
+    )
+
+    // Find the room to delete
+    const roomToDelete = rooms.find((room) => room.$id === id)
+
+    // Delete the room
+    if (roomToDelete) {
+      await databases.deleteDocument(
+        DATABASE_ID,
+        COLLECTION_ID,
+        roomToDelete.$id
+      )
+
+      // Revalidate my rooms and all rooms
+      revalidatePath('/rooms/my-rooms', 'layout')
+      revalidatePath('/', 'layout')
+
+      return { success: true }
+    } else {
+      return { error: 'Room not found' }
+    }
+  } catch (error) {
+    console.log('Failed to delete room:', error)
+    return { error: 'Failed to delete room' }
   }
 }
