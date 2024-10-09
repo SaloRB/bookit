@@ -5,6 +5,11 @@ import BookingForm from '@/app/components/BookingForm'
 import Heading from '@/app/components/Heading'
 import { getSingleRoom } from '@/app/actions/room.actions'
 
+const {
+  NEXT_PUBLIC_APPWRITE_PROJECT_ID: PROJECT_ID,
+  NEXT_PUBLIC_APPWRITE_ROOMS_STORAGE_BUCKET: STORAGE_BUCKET,
+} = process.env
+
 const RoomPage = async ({ params }) => {
   const { id } = params
   const room = await getSingleRoom(id)
@@ -12,6 +17,10 @@ const RoomPage = async ({ params }) => {
   if (!room) {
     return <Heading title="Room Not Found" />
   }
+
+  const imageUrl = `https://cloud.appwrite.io/v1/storage/buckets/${STORAGE_BUCKET}/files/${room.image}/view?project=${PROJECT_ID}`
+
+  const imgSrc = room.image ? imageUrl : '/images/no-image.jpg'
 
   return (
     <>
@@ -27,7 +36,7 @@ const RoomPage = async ({ params }) => {
 
         <div className="flex flex-col sm:flex-row sm:space-x-6">
           <Image
-            src={`/images/rooms/${room.image}`}
+            src={imgSrc}
             alt={room.name}
             width={400}
             height={100}
