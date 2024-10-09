@@ -1,6 +1,6 @@
 'use server'
 
-import { createAdminClient, createSessionClient } from '@/app/config/appwrite'
+import { createAdminClient, createSessionClient } from '@/config/appwrite'
 import { cookies } from 'next/headers'
 import { ID } from 'node-appwrite'
 

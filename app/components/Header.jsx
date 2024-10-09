@@ -1,7 +1,7 @@
 'use client'
 
 import { deleteSession } from '@/app/actions/auth.actions'
-import logo from '@/app/assets/images/logo.svg'
+import logo from '@/assets/images/logo.svg'
 import { useAuth } from '@/context/authContext'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -56,7 +56,7 @@ const Header = () => {
                       Bookings
                     </Link>
                     <Link
-                      href="/rooms/add"
+                      href="/rooms/add-room"
                       className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
                     >
                       Add Room
@@ -89,7 +89,7 @@ const Header = () => {
               {/* <!-- Logged In Only --> */}
               {isAuthenticated && (
                 <>
-                  <Link href="/rooms/my">
+                  <Link href="/rooms/my-rooms">
                     <FaBuilding className="inline mr-1" /> My Rooms
                   </Link>
                   <button
@@ -124,7 +124,7 @@ const Header = () => {
                 Bookings
               </Link>
               <Link
-                href="/rooms/add"
+                href="/rooms/add-room"
                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
               >
                 Add Room

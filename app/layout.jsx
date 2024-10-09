@@ -1,4 +1,4 @@
-import '@/app/assets/styles/globals.css'
+import '@/assets/styles/globals.css'
 import AuthWrapper from '@/app/components/AuthWrapper'
 import Footer from '@/app/components/Footer'
 import Header from '@/app/components/Header'
