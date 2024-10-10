@@ -22,7 +22,7 @@ const RoomCard = ({ room }) => {
           className="w-full sm:w-32 sm:h-32 mb-3 sm:mb-0 object-cover rounded-lg"
         />
         <div className="space-y-1">
-          <h4 className="text-lg font-semibold">{room.name}</h4>
+          <h2 className="text-lg font-semibold">{room.name}</h2>
           <p className="text-sm text-gray-600">
             <span className="font-semibold text-gray-800"> Address:</span>{' '}
             {room.address}

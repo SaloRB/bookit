@@ -8,7 +8,7 @@ const BookedRoomCard = ({ booking }) => {
   return (
     <div className="bg-white shadow rounded-lg p-4 mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center">
       <div>
-        <h4 className="text-lg font-semibold">{room.name}</h4>
+        <h2 className="text-lg font-semibold">{room.name}</h2>
         <p className="text-sm text-gray-600">
           <strong>Check In:</strong> {formatDate(booking.check_in)}
         </p>
